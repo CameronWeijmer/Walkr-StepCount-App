@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
     private double stepGoal;
     private SensorManager sensorManager;
-    private boolean running = false;
+    private boolean isrunning = false;
     private float totalSteps = 0f;
     private float previousTotalSteps = 0f;
     TextView userTextView;
@@ -40,6 +42,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setName();
         setStepGoal();
         setImage();
+
+    }
+
+    protected void onResume() {
+        super.onResume();
+        isrunning = true;
+        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI);
 
     }
 
@@ -68,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void setImage() {
         String imageUrl;
 
-        if (fakeSteps <= stepGoal){
+        if (fakeSteps <= stepGoal) {
 //            Runner img
             imageUrl = "https://images.pexels.com/photos/34514/spot-runs-start-la.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
             Picasso.get().load(imageUrl).into(feedbackView);
@@ -81,4 +91,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
