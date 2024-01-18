@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+        loadData();
         setName();
         setStepGoal();
         setImage();
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void resetSteps(View v) {
         previousTotalSteps = totalSteps;
         totalStepsTextView.setText(0);
+        saveSteps();
     }
 
     // Speichern aller Daten
