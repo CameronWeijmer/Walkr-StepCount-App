@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         totalStepsTextView.setText(0);
     }
 
-    public void saveSteps() {
+    private void saveSteps() {
         Intent caller = getIntent();
         String name = caller.getStringExtra(NAME_INTENT_PARAM);
         // Speichern aller Daten
