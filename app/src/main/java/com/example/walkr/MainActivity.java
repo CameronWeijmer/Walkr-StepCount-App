@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ImageView feedbackView;
     TextView totalStepsTextView;
     TextView currentDate;
+    TextView distanceTextView;
+    TextView kcalTextView;
     Integer fakeSteps = 1200;
 
     @Override
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         feedbackView = findViewById(R.id.feedbackView);
         totalStepsTextView = findViewById(R.id.totalStepsTextView);
         currentDate = findViewById(R.id.dateTextView);
+        distanceTextView = findViewById(R.id.distanceTextView);
+        kcalTextView = findViewById(R.id.kcalTextView);
 
         // Datum anzeigen
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM", Locale.getDefault());
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setName();
         setStepGoal();
         setImage();
+        displayCal();
+        displayDist();
 
     }
 
@@ -70,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         isrunning = true;
         Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI);
-
     }
 
     // Schritt aktualisierung
@@ -87,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void resetSteps(View v) {
         previousTotalSteps = totalSteps;
         totalStepsTextView.setText("0");
+        distanceTextView.setText("0");
+        kcalTextView.setText("0");
         saveSteps();
     }
 
@@ -147,6 +154,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Intent caller = getIntent();
         stepGoal = caller.getDoubleExtra(STEPGOAL_INTENT_PARAM, 0.0);
         stepGoalTextView.setText("Goal: " + stepGoal);
+    }
+
+    public void displayCal() {
+        totalSteps = 5000;
+        double caloriesPerStep = 0.05;
+        double burnedCalories = totalSteps * caloriesPerStep;
+
+        kcalTextView.setText(String.valueOf(burnedCalories));
+    }
+
+    public void displayDist() {
+        // Angenommen Schrittlänge beträgt 0.76 Meter
+        totalSteps = 5000;
+        double stepLengthMeters = 0.76;
+        double distanceMeters = totalSteps * stepLengthMeters;
+        double distanceKilometers = distanceMeters / 1000.0;
+
+        distanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", distanceKilometers));
     }
 
     // Validierung des Bildes anhand der Schritte

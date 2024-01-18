@@ -99,14 +99,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
         app:layout_constraintBottom_toTopOf="@+id/textView7"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/kcalTextView"
         app:srcCompat="@drawable/flame" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/kcalTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="122"
+        android:text="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
@@ -121,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/distanceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0.0"
@@ -145,8 +145,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="KM"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintStart_toStartOf="@+id/distanceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
 
     <Button
         android:id="@+id/button4"
