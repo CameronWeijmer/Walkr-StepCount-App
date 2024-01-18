@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
     private double stepGoal;
+    private double calories;
+    private double distance;
     private SensorManager sensorManager;
     private boolean isrunning = false;
     private float totalSteps = 0f;
@@ -83,6 +86,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         previousTotalSteps = totalSteps;
         totalStepsTextView.setText(0);
     }
+
+    public void saveSteps() {
+        Intent caller = getIntent();
+        String name = caller.getStringExtra(NAME_INTENT_PARAM);
+        // Speichern aller Daten
+        SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("previousTotalSteps", previousTotalSteps);
+        editor.putString("stepGoal", String.valueOf(stepGoal));
+        editor.putString("calories", String.valueOf(calories));
+        editor.putString("distance", String.valueOf(distance));
+        editor.putString("name", name);
+
+        editor.apply();
+    }
+
 
     // Aufruf der Settingsseite
     public void onSettingsClick(View v) {
