@@ -6,15 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
-    Button settingsButton;
     TextView userTextView;
     TextView stepGoalTextView;
+    ImageView feedbackView;
     Integer fakeSteps = 1200;
 
     @Override
@@ -24,13 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
         userTextView = findViewById(R.id.userTextView);
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
+        feedbackView = findViewById(R.id.feedbackView);
 
         setName();
         setStepGoal();
+        setImage();
 
     }
 
-    public void onSettingsClick(View v){
+    public void onSettingsClick(View v) {
         Intent resultIntent = new Intent(this, UserSettings.class);
         startActivity(resultIntent);
     }
@@ -52,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         stepGoalTextView.setText("Goal: " + stepGoal);
     }
 
-    private void setImage(){}
+    private void setImage() {
+        String imageUrl = "https://images.pexels.com/photos/34514/spot-runs-start-la.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+        Picasso.get().load(imageUrl).into(feedbackView);
+    }
 
 }
