@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Reset steps
     public void resetSteps(View v) {
         previousTotalSteps = totalSteps;
-        totalStepsTextView.setText(0);
+        totalStepsTextView.setText("0");
         saveSteps();
     }
 
