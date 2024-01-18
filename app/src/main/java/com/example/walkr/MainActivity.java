@@ -2,19 +2,25 @@ package com.example.walkr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
     private double stepGoal;
+    private SensorManager sensorManager;
+    private boolean running = false;
+    private float totalSteps = 0f;
+    private float previousTotalSteps = 0f;
     TextView userTextView;
     TextView stepGoalTextView;
     ImageView feedbackView;
@@ -28,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         userTextView = findViewById(R.id.userTextView);
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
         feedbackView = findViewById(R.id.feedbackView);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         setName();
         setStepGoal();
