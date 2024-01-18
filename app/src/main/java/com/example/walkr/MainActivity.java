@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView userTextView;
     TextView stepGoalTextView;
     ImageView feedbackView;
+    TextView totalStepsTextView;
     Integer fakeSteps = 1200;
 
     @Override
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         userTextView = findViewById(R.id.userTextView);
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
         feedbackView = findViewById(R.id.feedbackView);
+        totalStepsTextView = findViewById(R.id.totalStepsTextView);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -57,7 +60,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Schritt aktualisierung
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (isrunning) {
+            totalSteps = event.values[0];
+            int allSteps = (int) (totalSteps - previousTotalSteps);
+            totalStepsTextView.setText(String.valueOf(allSteps));
+        }
+    }
 
+    // Reset steps
+    public void resetSteps(View v) {
+        previousTotalSteps = totalSteps;
+        totalStepsTextView.setText(0);
     }
 
     // Aufruf der Settingsseite
