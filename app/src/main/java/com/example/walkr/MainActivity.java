@@ -87,10 +87,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         totalStepsTextView.setText(0);
     }
 
+    // Speichern aller Daten
     private void saveSteps() {
         Intent caller = getIntent();
         String name = caller.getStringExtra(NAME_INTENT_PARAM);
-        // Speichern aller Daten
+
         SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat("previousTotalSteps", previousTotalSteps);
@@ -102,6 +103,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         editor.apply();
     }
 
+    // Gespeicherte Daten holen
+    private void loadData() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+
+        totalSteps = sharedPreferences.getFloat("previousTotalSteps", 0f);
+
+        String stepGoalString = sharedPreferences.getString("stepGoal", "0");
+        stepGoal = Double.parseDouble(stepGoalString);
+
+        String caloriesString = sharedPreferences.getString("calories", "0");
+        calories = Double.parseDouble(caloriesString);
+
+        String distanceString = sharedPreferences.getString("distance", "0");
+        distance = Double.parseDouble(distanceString);
+
+//        name = sharedPreferences.getString("name", "User");
+    }
 
     // Aufruf der Settingsseite
     public void onSettingsClick(View v) {
