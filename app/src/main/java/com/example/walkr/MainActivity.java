@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
+    private double stepGoal;
     TextView userTextView;
     TextView stepGoalTextView;
     ImageView feedbackView;
@@ -50,15 +51,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setStepGoal() {
+    public void setStepGoal() {
         Intent caller = getIntent();
-        double stepGoal = caller.getDoubleExtra(STEPGOAL_INTENT_PARAM, 0.0);
+        stepGoal = caller.getDoubleExtra(STEPGOAL_INTENT_PARAM, 0.0);
         stepGoalTextView.setText("Goal: " + stepGoal);
     }
 
     private void setImage() {
-        String imageUrl = "https://images.pexels.com/photos/34514/spot-runs-start-la.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
-        Picasso.get().load(imageUrl).into(feedbackView);
+        String imageUrl;
+
+        if (fakeSteps <= stepGoal){
+//            Runner img
+            imageUrl = "https://images.pexels.com/photos/34514/spot-runs-start-la.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+            Picasso.get().load(imageUrl).into(feedbackView);
+        } else {
+            // Track image
+            imageUrl = "https://images.pexels.com/photos/163444/sport-treadmill-tor-route-163444.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+            Picasso.get().load(imageUrl).into(feedbackView);
+        }
+
+
     }
 
 }
