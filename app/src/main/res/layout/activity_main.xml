@@ -47,10 +47,10 @@
         android:layout_marginEnd="20dp"
         android:text="18 Januar"
         app:layout_constraintEnd_toEndOf="@+id/userTextView"
-        app:layout_constraintTop_toTopOf="@+id/feedBackView" />
+        app:layout_constraintTop_toTopOf="@+id/feedbackView" />
 
     <ImageView
-        android:id="@+id/feedBackView"
+        android:id="@+id/feedbackView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="34dp"
@@ -69,8 +69,8 @@
         android:text="Total Steps"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/feedBackView"
-        app:layout_constraintStart_toStartOf="@+id/feedBackView" />
+        app:layout_constraintEnd_toEndOf="@+id/feedbackView"
+        app:layout_constraintStart_toStartOf="@+id/feedbackView" />
 
     <TextView
         android:id="@+id/textView4"
