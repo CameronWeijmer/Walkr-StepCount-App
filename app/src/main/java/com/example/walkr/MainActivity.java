@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,24 +15,24 @@ public class MainActivity extends AppCompatActivity {
     Button settingsButton;
     TextView userTextView;
     TextView stepGoalTextView;
+    Integer fakeSteps = 1200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        settingsButton = findViewById(R.id.settingsButton);
         userTextView = findViewById(R.id.userTextView);
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
 
         setName();
         setStepGoal();
 
-        settingsButton.setOnClickListener(view -> {
-            Intent resultIntent = new Intent(this, UserSettings.class);
-            startActivity(resultIntent);
-        });
+    }
 
+    public void onSettingsClick(View v){
+        Intent resultIntent = new Intent(this, UserSettings.class);
+        startActivity(resultIntent);
     }
 
     private void setName() {
@@ -50,5 +51,7 @@ public class MainActivity extends AppCompatActivity {
         double stepGoal = caller.getDoubleExtra(STEPGOAL_INTENT_PARAM, 0.0);
         stepGoalTextView.setText("Goal: " + stepGoal);
     }
+
+    private void setImage(){}
 
 }
