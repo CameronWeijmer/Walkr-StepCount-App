@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    // Sensorlistener
     protected void onResume() {
         super.onResume();
         isrunning = true;
@@ -53,11 +54,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    // Schritt aktualisierung
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    // Aufruf der Settingsseite
     public void onSettingsClick(View v) {
         Intent resultIntent = new Intent(this, UserSettings.class);
         startActivity(resultIntent);
     }
 
+    // Auslesen und Anzeige des Namens
     private void setName() {
         Intent caller = getIntent();
         String name = caller.getStringExtra(NAME_INTENT_PARAM);
@@ -68,13 +77,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-
+    // Auslesen und Anzeige des Schrittziels
     public void setStepGoal() {
         Intent caller = getIntent();
         stepGoal = caller.getDoubleExtra(STEPGOAL_INTENT_PARAM, 0.0);
         stepGoalTextView.setText("Goal: " + stepGoal);
     }
 
+    // Validierung des Bildes anhand der Schritte
     private void setImage() {
         String imageUrl;
 
@@ -91,10 +101,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
