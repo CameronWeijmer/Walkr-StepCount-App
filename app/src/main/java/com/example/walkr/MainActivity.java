@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView stepGoalTextView;
     ImageView feedbackView;
     TextView totalStepsTextView;
+    TextView currentDate;
     Integer fakeSteps = 1200;
 
     @Override
@@ -39,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
         feedbackView = findViewById(R.id.feedbackView);
         totalStepsTextView = findViewById(R.id.totalStepsTextView);
+        currentDate = findViewById(R.id.dateTextView);
+
+        // Datum anzeigen
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM", Locale.getDefault());
+        String formattedDate = sdf.format(new Date());
+        currentDate.setText(formattedDate);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
