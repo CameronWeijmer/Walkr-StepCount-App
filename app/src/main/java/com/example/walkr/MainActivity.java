@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
     private double stepGoal;
+    private String name;
     private double calories;
     private double distance;
     private SensorManager sensorManager;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Speichern aller Daten
     private void saveSteps() {
         Intent caller = getIntent();
-        String name = caller.getStringExtra(NAME_INTENT_PARAM);
+        name = caller.getStringExtra(NAME_INTENT_PARAM);
 
         SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         String distanceString = sharedPreferences.getString("distance", "0");
         distance = Double.parseDouble(distanceString);
 
-//        name = sharedPreferences.getString("name", "User");
+        name = sharedPreferences.getString("name", "User");
     }
 
     // Aufruf der Settingsseite
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Auslesen und Anzeige des Namens
     private void setName() {
         Intent caller = getIntent();
-        String name = caller.getStringExtra(NAME_INTENT_PARAM);
+        name = caller.getStringExtra(NAME_INTENT_PARAM);
         if (name != null) {
             userTextView.setText("Hey, " + name);
         } else {
