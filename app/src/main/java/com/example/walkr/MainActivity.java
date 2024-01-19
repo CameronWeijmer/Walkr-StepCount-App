@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
-
         userTextView = findViewById(R.id.userTextView);
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
         feedbackView = findViewById(R.id.feedbackView);
@@ -165,48 +164,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     // Validierung des Bildes anhand der Schritte
+    // https://google.github.io/volley/simple.html
     private void setImage() {
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://api.npoint.io/7869c6a1b2b947efdd13";
-
-        // https://google.github.io/volley/simple.html
-        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             JSONObject imagesObject = jsonResponse.getJSONObject("images");
-
                             if (stepGoal < totalSteps) {
                                 String happyImageUrl = imagesObject.getString("happy");
                                 Picasso.get().load(happyImageUrl).into(feedbackView);
-                                // Nachricht schicken für das erreichen des Schrittziels
                                 sendNotification();
-
                             } else if ((totalSteps / 2) > stepGoal) {
                                 String neutralImageUrl = imagesObject.getString("neutral");
                                 Picasso.get().load(neutralImageUrl).into(feedbackView);
-
-                            } else if (totalSteps < stepGoal) {
-
+                            } else if (totalSteps <= stepGoal) {
                                 String sadImageUrl = imagesObject.getString("sad");
                                 Picasso.get().load(sadImageUrl).into(feedbackView);
-
-                            } else {
-                                String runnerImageUrl = imagesObject.getString("runner");
-                                Picasso.get().load(runnerImageUrl).into(feedbackView);
                             }
-
-                        } catch (JSONException e) {
-
-                            e.printStackTrace();
-                            textID.setText("Error parsing JSON");
-                        }
-
+                        } catch (JSONException e) { e.printStackTrace(); textID.setText("Error parsing JSON"); }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -214,9 +194,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 textID.setText("API not reachable");
             }
         });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
+        queue.add(stringRequest); }
 
     // Methode für das abschicken der Notification
     private void sendNotification() {
