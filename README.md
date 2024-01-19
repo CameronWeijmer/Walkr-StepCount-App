@@ -33,3 +33,7 @@ Ausserdem musste ich ein Plugin in Android Studio installieren, das heisst: # Ch
 ## 4. Umgebung
 Die App wurde mithilfe von Android Studio implementiert.
 Als Emulator wurde das Pixel 7 Pro API 34 verwendet.
+
+## 5. APK Installationsdatei
+Die APK Installationsdatei befindet sich unter: <br>
+/app/build/outputs/apk/
