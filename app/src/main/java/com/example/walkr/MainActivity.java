@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        repeatTasks();
         loadData();
+        setImage();
         setName();
         setStepGoal();
 
@@ -111,22 +111,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             totalStepsTextView.setText(String.valueOf(allSteps));
         }
     }
-
-    // wiederholt Methoden alle 10 Sekunden
-//    private void repeatTasks() {
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                setImage();
-//                displayCal();
-//                displayDist();
-//
-//                // Nächsten aufruf starten
-//                handler.postDelayed(this, DELAY_SECONDS * 1000);
-//            }
-//        }, DELAY_SECONDS * 1000);
-//    }
 
     // Reset steps
     public void resetSteps(View v) {
@@ -199,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Berechnen der Kalorien
     public void displayCal() {
         double caloriesPerStep = 0.05;
-        double burnedCalories = previousTotalSteps * caloriesPerStep;
+        double burnedCalories = totalSteps * caloriesPerStep;
 
         kcalTextView.setText(String.valueOf(burnedCalories));
     }
@@ -208,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void displayDist() {
         // Angenommen Schrittlänge beträgt 0.76 Meter
         double stepLengthMeters = 0.76;
-        double distanceMeters = previousTotalSteps * stepLengthMeters;
+        double distanceMeters = totalSteps * stepLengthMeters;
         double distanceKilometers = distanceMeters / 1000.0;
 
         distanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", distanceKilometers));
@@ -231,17 +215,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             JSONObject jsonResponse = new JSONObject(response);
                             JSONObject imagesObject = jsonResponse.getJSONObject("images");
 
-                            if (stepGoal < previousTotalSteps) {
+                            if (stepGoal < totalSteps) {
                                 String happyImageUrl = imagesObject.getString("happy");
                                 Picasso.get().load(happyImageUrl).into(feedbackView);
                                 // Nachricht schicken für das erreichen des Schrittziels
                                 sendNotification();
 
-                            } else if ((previousTotalSteps / 2) > stepGoal) {
+                            } else if ((previousTotalSteps / 2) > totalSteps) {
                                 String neutralImageUrl = imagesObject.getString("neutral");
                                 Picasso.get().load(neutralImageUrl).into(feedbackView);
 
-                            } else if ((previousTotalSteps = 0) < stepGoal) {
+                            } else if ((previousTotalSteps = 0) < totalSteps) {
 
                                 String sadImageUrl = imagesObject.getString("sad");
                                 Picasso.get().load(sadImageUrl).into(feedbackView);
@@ -276,6 +260,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 .setContentText("Congrats you achieved your stepgoal!!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager.notify(0, builder.build());
+    }
+
+    public void loadStats(View v) {
+        setImage();
+        displayCal();
+        displayDist();
     }
 
     @Override
