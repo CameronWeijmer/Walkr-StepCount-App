@@ -27,4 +27,5 @@ Ich habe den Linter installiert und ein `checkStyle.XML` erstellt, welches über
 ```
 Ausserdem musste ich ein Plugin in Android Studio installieren, das heisst: # CheckStyle-IDEA
 
-## 3. Link zum Repo ist: https://github.com/CameronWeijmer/Walkr-StepCount-App.git
+## 3. Link zum Repo 
+### https://github.com/CameronWeijmer/Walkr-StepCount-App.git
