@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView distanceTextView;
     TextView kcalTextView;
     TextView textID;
-    Integer fakeSteps = 1200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
 
-        totalSteps = sharedPreferences.getFloat("previousTotalSteps", 0f);
+        previousTotalSteps = sharedPreferences.getFloat("previousTotalSteps", 0f);
 
         String stepGoalString = sharedPreferences.getString("stepGoal", "0");
         stepGoal = Double.parseDouble(stepGoalString);
@@ -199,9 +198,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     // Berechnen der Kalorien
     public void displayCal() {
-        totalSteps = 5000;
         double caloriesPerStep = 0.05;
-        double burnedCalories = totalSteps * caloriesPerStep;
+        double burnedCalories = previousTotalSteps * caloriesPerStep;
 
         kcalTextView.setText(String.valueOf(burnedCalories));
     }
@@ -209,9 +207,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Berechnen der Distanz
     public void displayDist() {
         // Angenommen Schrittlänge beträgt 0.76 Meter
-        totalSteps = 5000;
         double stepLengthMeters = 0.76;
-        double distanceMeters = totalSteps * stepLengthMeters;
+        double distanceMeters = previousTotalSteps * stepLengthMeters;
         double distanceKilometers = distanceMeters / 1000.0;
 
         distanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", distanceKilometers));
@@ -234,9 +231,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             JSONObject jsonResponse = new JSONObject(response);
                             JSONObject imagesObject = jsonResponse.getJSONObject("images");
 
-                            if (stepGoal <= previousTotalSteps) {
+                            if (stepGoal < previousTotalSteps) {
                                 String happyImageUrl = imagesObject.getString("happy");
                                 Picasso.get().load(happyImageUrl).into(feedbackView);
+                                // Nachricht schicken für das erreichen des Schrittziels
+                                sendNotification();
 
                             } else if ((previousTotalSteps / 2) > stepGoal) {
                                 String neutralImageUrl = imagesObject.getString("neutral");
@@ -281,6 +280,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        // Not needed in this App
     }
 }
