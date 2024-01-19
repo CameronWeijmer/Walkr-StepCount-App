@@ -113,20 +113,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     // wiederholt Methoden alle 10 Sekunden
-    private void repeatTasks() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                setImage();
-                displayCal();
-                displayDist();
-
-                // Nächsten aufruf starten
-                handler.postDelayed(this, DELAY_SECONDS * 1000);
-            }
-        }, DELAY_SECONDS * 1000);
-    }
+//    private void repeatTasks() {
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                setImage();
+//                displayCal();
+//                displayDist();
+//
+//                // Nächsten aufruf starten
+//                handler.postDelayed(this, DELAY_SECONDS * 1000);
+//            }
+//        }, DELAY_SECONDS * 1000);
+//    }
 
     // Reset steps
     public void resetSteps(View v) {
