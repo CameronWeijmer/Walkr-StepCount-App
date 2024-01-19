@@ -20,7 +20,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView currentDate;
     TextView distanceTextView;
     TextView kcalTextView;
+    TextView textID;
     Integer fakeSteps = 1200;
 
     @Override
@@ -70,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         currentDate = findViewById(R.id.dateTextView);
         distanceTextView = findViewById(R.id.distanceTextView);
         kcalTextView = findViewById(R.id.kcalTextView);
+        textID = findViewById(R.id.textID);
 
         // Datum anzeigen
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM", Locale.getDefault());
@@ -209,17 +220,54 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     // Validierung des Bildes anhand der Schritte
     private void setImage() {
-        String imageUrl;
 
-        if (fakeSteps <= stepGoal) {
-//            Runner img
-            imageUrl = "https://images.pexels.com/photos/34514/spot-runs-start-la.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
-            Picasso.get().load(imageUrl).into(feedbackView);
-        } else {
-            // Track image
-            imageUrl = "https://images.pexels.com/photos/163444/sport-treadmill-tor-route-163444.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
-            Picasso.get().load(imageUrl).into(feedbackView);
-        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.npoint.io/7869c6a1b2b947efdd13";
+
+        // https://google.github.io/volley/simple.html
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            JSONObject imagesObject = jsonResponse.getJSONObject("images");
+
+                            if (stepGoal <= previousTotalSteps) {
+                                String happyImageUrl = imagesObject.getString("happy");
+                                Picasso.get().load(happyImageUrl).into(feedbackView);
+
+                            } else if ((previousTotalSteps / 2) > stepGoal) {
+                                String neutralImageUrl = imagesObject.getString("neutral");
+                                Picasso.get().load(neutralImageUrl).into(feedbackView);
+
+                            } else if ((previousTotalSteps = 0) < stepGoal) {
+
+                                String sadImageUrl = imagesObject.getString("sad");
+                                Picasso.get().load(sadImageUrl).into(feedbackView);
+
+                            } else {
+                                String runnerImageUrl = imagesObject.getString("runner");
+                                Picasso.get().load(runnerImageUrl).into(feedbackView);
+                            }
+
+                        } catch (JSONException e) {
+
+                            e.printStackTrace();
+                            textID.setText("Error parsing JSON");
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                textID.setText("API not reachable");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     // Methode für das abschicken der Notification
