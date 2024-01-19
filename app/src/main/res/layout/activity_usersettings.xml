@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#232222"
     tools:context=".UserSettings">
 
     <LinearLayout
@@ -26,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@android:color/white"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@android:color/white"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,6 +79,7 @@
         android:layout_marginBottom="559dp"
         android:text="Settings"
         android:textSize="25dp"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView6"
         app:layout_constraintStart_toStartOf="@+id/imageView6"
