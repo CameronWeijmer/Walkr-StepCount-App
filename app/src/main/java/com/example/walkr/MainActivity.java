@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         currentDate = findViewById(R.id.dateTextView);
         distanceTextView = findViewById(R.id.distanceTextView);
         kcalTextView = findViewById(R.id.kcalTextView);
-        textID = findViewById(R.id.textID);
 
         // Datum anzeigen
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM", Locale.getDefault());
