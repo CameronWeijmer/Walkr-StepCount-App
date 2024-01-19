@@ -221,11 +221,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 // Nachricht schicken für das erreichen des Schrittziels
                                 sendNotification();
 
-                            } else if ((previousTotalSteps / 2) > totalSteps) {
+                            } else if ((totalSteps / 2) > stepGoal) {
                                 String neutralImageUrl = imagesObject.getString("neutral");
                                 Picasso.get().load(neutralImageUrl).into(feedbackView);
 
-                            } else if ((previousTotalSteps = 0) < totalSteps) {
+                            } else if ((totalSteps = 0) < stepGoal) {
 
                                 String sadImageUrl = imagesObject.getString("sad");
                                 Picasso.get().load(sadImageUrl).into(feedbackView);
@@ -267,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         displayCal();
         displayDist();
     }
+
+    //refreshstats todo
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
