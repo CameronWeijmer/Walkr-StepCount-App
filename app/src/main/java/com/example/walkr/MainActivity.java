@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        loadData();
         setImage();
         setName();
         setStepGoal();
@@ -109,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             totalSteps = event.values[0];
             int allSteps = (int) (totalSteps - previousTotalSteps);
             totalStepsTextView.setText(String.valueOf(allSteps));
+            displayDist();
+            displayCal();
+            setImage();
         }
     }
 
@@ -116,44 +118,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void resetSteps(View v) {
         previousTotalSteps = totalSteps;
         totalStepsTextView.setText("0");
-        distanceTextView.setText("0");
-        kcalTextView.setText("0");
-        saveSteps();
-    }
-
-    // Speichern aller Daten
-    private void saveSteps() {
-        Intent caller = getIntent();
-        name = caller.getStringExtra(NAME_INTENT_PARAM);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat("previousTotalSteps", previousTotalSteps);
-        editor.putString("stepGoal", String.valueOf(stepGoal));
-        editor.putString("calories", String.valueOf(calories));
-        editor.putString("distance", String.valueOf(distance));
-        editor.putString("name", name);
-
-        editor.apply();
-    }
-
-    // Gespeicherte Daten holen
-    private void loadData() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
-
-        previousTotalSteps = sharedPreferences.getFloat("previousTotalSteps", 0f);
-
-        String stepGoalString = sharedPreferences.getString("stepGoal", "0");
-        stepGoal = Double.parseDouble(stepGoalString);
-
-        String caloriesString = sharedPreferences.getString("calories", "0");
-        calories = Double.parseDouble(caloriesString);
-
-        String distanceString = sharedPreferences.getString("distance", "0");
-        distance = Double.parseDouble(distanceString);
-
-        name = sharedPreferences.getString("name", "User");
+        distanceTextView.setText("0.0");
+        kcalTextView.setText("0.0");
     }
 
     // Aufruf der Settingsseite
@@ -225,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 String neutralImageUrl = imagesObject.getString("neutral");
                                 Picasso.get().load(neutralImageUrl).into(feedbackView);
 
-                            } else if ((totalSteps = 0) < stepGoal) {
+                            } else if (totalSteps < stepGoal) {
 
                                 String sadImageUrl = imagesObject.getString("sad");
                                 Picasso.get().load(sadImageUrl).into(feedbackView);
@@ -261,14 +227,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager.notify(0, builder.build());
     }
-
-    public void loadStats(View v) {
-        setImage();
-        displayCal();
-        displayDist();
-    }
-
-    //refreshstats todo
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
