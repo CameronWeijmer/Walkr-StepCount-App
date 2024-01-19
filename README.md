@@ -29,3 +29,7 @@ Ausserdem musste ich ein Plugin in Android Studio installieren, das heisst: # Ch
 
 ## 3. Link zum Repo 
 ### https://github.com/CameronWeijmer/Walkr-StepCount-App.git
+
+## 4. Umgebung
+Die App wurde mithilfe von Android Studio implementiert.
+Als Emulator wurde das Pixel 7 Pro API 34 verwendet.
