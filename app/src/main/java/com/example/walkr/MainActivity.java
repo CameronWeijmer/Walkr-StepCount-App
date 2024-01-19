@@ -1,7 +1,10 @@
 package com.example.walkr;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +12,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,11 +28,14 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     public static final String NAME_INTENT_PARAM = "name";
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
+    private static final String CHANNEL_ID = "defaultChannel";
+    private static final String CHANNEL_NAME = "Default Channel";
     private double stepGoal;
     private String name;
     private double calories;
     private double distance;
     private SensorManager sensorManager;
+    private NotificationManager notificationManager;
     private boolean isrunning = false;
     private float totalSteps = 0f;
     private float previousTotalSteps = 0f;
@@ -46,6 +53,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Setup vom Notification Manager
+        this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         userTextView = findViewById(R.id.userTextView);
         stepGoalTextView = findViewById(R.id.stepGoalTextView);
         feedbackView = findViewById(R.id.feedbackView);
@@ -60,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         currentDate.setText(formattedDate);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
 
         loadData();
         setName();
@@ -189,6 +204,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
 
+    }
+
+    // Methode für das abschicken der Notification
+    private void sendNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("WALKR STEPGOAL")
+                .setContentText("Congrats you achieved your stepgoal!!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        notificationManager.notify(0, builder.build());
     }
 
 
