@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,12 +31,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public static final String STEPGOAL_INTENT_PARAM = "stepgoal";
     private static final String CHANNEL_ID = "defaultChannel";
     private static final String CHANNEL_NAME = "Default Channel";
+    private static final int DELAY_SECONDS = 10;
     private double stepGoal;
     private String name;
     private double calories;
     private double distance;
     private SensorManager sensorManager;
     private NotificationManager notificationManager;
+    private Handler handler = new Handler();
     private boolean isrunning = false;
     private float totalSteps = 0f;
     private float previousTotalSteps = 0f;
@@ -75,13 +78,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-
+        repeatTasks();
         loadData();
         setName();
         setStepGoal();
-        setImage();
-        displayCal();
-        displayDist();
 
     }
 
@@ -101,6 +101,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             int allSteps = (int) (totalSteps - previousTotalSteps);
             totalStepsTextView.setText(String.valueOf(allSteps));
         }
+    }
+
+    // wiederholt Methoden alle 10 Sekunden
+    private void repeatTasks() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                setImage();
+                displayCal();
+                displayDist();
+
+                // Nächsten aufruf starten
+                handler.postDelayed(this, DELAY_SECONDS * 1000);
+            }
+        }, DELAY_SECONDS * 1000);
     }
 
     // Reset steps
@@ -171,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         stepGoalTextView.setText("Goal: " + stepGoal);
     }
 
+    // Berechnen der Kalorien
     public void displayCal() {
         totalSteps = 5000;
         double caloriesPerStep = 0.05;
@@ -179,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         kcalTextView.setText(String.valueOf(burnedCalories));
     }
 
+    // Berechnen der Distanz
     public void displayDist() {
         // Angenommen Schrittlänge beträgt 0.76 Meter
         totalSteps = 5000;
@@ -202,8 +220,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             imageUrl = "https://images.pexels.com/photos/163444/sport-treadmill-tor-route-163444.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
             Picasso.get().load(imageUrl).into(feedbackView);
         }
-
-
     }
 
     // Methode für das abschicken der Notification
@@ -215,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager.notify(0, builder.build());
     }
-
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
