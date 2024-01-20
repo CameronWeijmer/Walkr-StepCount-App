@@ -37,3 +37,6 @@ Als Emulator wurde das Pixel 7 Pro API 34 verwendet.
 ## 5. APK Installationsdatei
 Die APK Installationsdatei befindet sich unter: <br>
 /app/build/outputs/apk/
+
+## Erteilen der Berechtigungen
+Um die App benutzen zu können, muss man in den Einstellungen alles erlauben, somit kann die App auf den Schrittsensor zugreifen
